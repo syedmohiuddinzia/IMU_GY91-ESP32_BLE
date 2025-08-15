@@ -1,4 +1,4 @@
-## Overview
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5455f67e-306e-4899-947f-6b9dfb2a4242" />## Overview
 The **IMU_GY91-ESP32_BLE** project demonstrates how to capture, process, and transmit real-time motion and environmental sensor data using an ESP32 and the GY-91 sensor module.
 The system reads data from the **MPU-9250** (accelerometer, gyroscope, magnetometer) and **BMP280** (barometer), computes orientation and heading, and broadcasts this data via **Bluetooth Low Energy (BLE)**.
 It is suitable for applications in **motion tracking, orientation estimation, robotics, environmental monitoring, and IoT**.
@@ -81,9 +81,77 @@ The system captures, processes, and transmits real-time sensor data:
 - **Altitude Estimation:** Converts pressure readings to altitude using the barometric formula.
 - **BLE Transmission:** Sends processed data to smartphones or computers for visualization, logging, or further analysis.
 **Applications:** Motion tracking, GPS-independent navigation, environmental monitoring, and IoT research.
-
 ---
+#### Data Data Output:
+```hex
+F4 3C 00 A0 84 3F 00 F0 D2 3F 00 C0 DA BF 00 E0 2B BF A5 75 FA 43 9E F2 4B 44 D4 23 9B 41 5E 2D DC 3D 48 66 3B BD 60 C8 21 3D 80 1D 76 3F 29 C8 A4 3B 46 BE 26 3D CF 53 8B 3E 6F 1B EA 3F 61 A0 8A C0 BE 57 C1 C1 F0 55 8C 42 61 A0 8A 40 6F 1B EA 3F AA 63 02 42 00 00 68 42 EC 91 0D C3 A0 C8 6F 44 A5 4E E6 43 
+```
+#### CSV Data Output:
+```csv
+0.08,0.03,1.04,1.65,-1.71,-0.67,500.92,815.79,19.39,0.11,-0.05,0.040.96,0.01,0.04,0.27,1.83,-4.33,-24.17,70.17,4.33,1.83,32.60,58,-141.57,959.13,460.61
+```
+---
+### HEX Data Decoding
+The **IMU_GY91-ESP32_BLE** system encodes sensor data into a **hexadecimal format** before sending it over BLE. This ensures **compact, readable, and reliable transmission** of binary data.
 
+#### How It Works
+- **1. Data Preparation:**
+      All sensor readings are collected into a single float array:
+      ```cpp
+      float data[] = {ax, ay, az, gx, gy, gz, mx, my, mz,
+                      la_x, la_y, la_z, qw, qx, qy, qz,
+                      ex, ey, ez, yaw, pitch, roll, t, hD,
+                      ta, p, a};
+      ```
+      This includes:
+      - Motion data (accelerometer, gyroscope, magnetometer)
+      - Linear acceleration
+      - Orientation (quaternions, Euler angles)
+      - Heading
+      - Environmental data (temperature, pressure, altitude)
+      - Timestamp
+- **2. Convert to Byte Array:**
+      Using `memcpy`, the float data is copied into a **byte buffer**:
+      ```memcpy(buffer, data, sizeof(data));```
+      - Each `float` occupies 4 bytes.
+      - The resulting buffer contains all sensor readings in **raw binary format**.
+- **3. HEX Representation (Optional for Debugging):**
+      The bytes in the buffer can be printed as hexadecimal values for human-readable inspection:
+      ```cpp
+      for (int i = 0; i < sizeof(buffer); i++) {
+          if (buffer[i] < 0x10) Serial.print("0");
+          Serial.print(buffer[i], HEX);
+          Serial.print(" ");
+      }
+      Serial.println();
+      ```
+      - This produces a line of HEX values like:
+      ```3F 80 00 00 40 00 00 00 ...```
+      - Each HEX pair represents one byte of sensor data.
+
+- **4. BLE Transmission:**
+      - The same byte buffer is sent directly over BLE:
+      ```
+      void sendDataBLE(uint8_t* buffer, size_t& length) {
+        float data[] = { /* all sensor variables */ };
+        length = sizeof(data);
+        memcpy(buffer, data, length);
+      }
+      ```
+      - The BLE device receives the binary payload, which can then be decoded back into float values on the receiver side.
+
+### Why HEX / Binary Encoding?
+- **Compactness:** Binary data is smaller than sending text or decimal strings.
+- **Precision:** Ensures float values are transmitted without rounding errors.
+- **Consistency:** All variables are serialized in a fixed order, making decoding straightforward.
+- **Debug-Friendly:** Printing the buffer in HEX allows easy verification of transmitted data.
+
+### Technical Skills Applied:
+- **Memory Management:** Using memcpy to serialize float data into bytes.
+- **Data Serialization:** Structuring sensor data for wireless transmission.
+- **Debugging & Visualization:** Converting binary data to HEX for inspection.
+- **Wireless Communication:** BLE transmission of binary payloads for real-time applications.
+  
 ### What is this system capturing?
 The IMU_GY91-ESP32_BLE system captures real-time sensor data from the GY-91 module, providing comprehensive information about motion, orientation, and the surrounding environment. The captured data includes:
 #### Accelerometer Data (`ax, ay, az`)
