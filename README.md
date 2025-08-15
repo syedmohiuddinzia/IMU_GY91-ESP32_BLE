@@ -228,15 +228,6 @@ Follow these steps to quickly set up and run the **IMU_GY91-ESP32_BLE** system:
   ---
   
 ## Future Enhancements
-- **1. Data Logging**
-  - Log sensor data to an SD card or cloud service for long-term analysis.
-- **2. Advanced Processing**
-  - Implement sensor fusion algorithms like Madgwick or Kalman filters to improve orientation accuracy.
-- User Interface
-  - Develop mobile or web applications for real-time visualization, graphs, and alerts.
-- Extended Hardware Integration
-  - Add additional sensors such as GPS or environmental sensors to expand system capabilities.
-
-Advanced Processing: Apply algorithms for sensor fusion to improve data accuracy.
-
-User Interface: Develop a mobile or web application to visualize and analyze the sensor data in real-time.
+- **Data Logging:** Implement functionality to log sensor data to an SD card or cloud service.
+- **Advanced Processing:** Apply algorithms for sensor fusion to improve data accuracy.
+- **User Interface:** Develop a mobile or web application to visualize and analyze the sensor data in real-time.
