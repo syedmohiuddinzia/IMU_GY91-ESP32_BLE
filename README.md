@@ -1,4 +1,4 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5455f67e-306e-4899-947f-6b9dfb2a4242" />## Overview
+## Overview
 The **IMU_GY91-ESP32_BLE** project demonstrates how to capture, process, and transmit real-time motion and environmental sensor data using an ESP32 and the GY-91 sensor module.
 The system reads data from the **MPU-9250** (accelerometer, gyroscope, magnetometer) and **BMP280** (barometer), computes orientation and heading, and broadcasts this data via **Bluetooth Low Energy (BLE)**.
 It is suitable for applications in **motion tracking, orientation estimation, robotics, environmental monitoring, and IoT**.
