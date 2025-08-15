@@ -96,49 +96,47 @@ The **IMU_GY91-ESP32_BLE** system encodes sensor data into a **hexadecimal forma
 
 #### How It Works
 - **1. Data Preparation:**
-      All sensor readings are collected into a single float array:
-      ```cpp
+```cpp
       float data[] = {ax, ay, az, gx, gy, gz, mx, my, mz,
                       la_x, la_y, la_z, qw, qx, qy, qz,
                       ex, ey, ez, yaw, pitch, roll, t, hD,
                       ta, p, a};
-      ```
-      This includes:
-      - Motion data (accelerometer, gyroscope, magnetometer)
-      - Linear acceleration
-      - Orientation (quaternions, Euler angles)
-      - Heading
-      - Environmental data (temperature, pressure, altitude)
-      - Timestamp
+```
+  - Motion data (accelerometer, gyroscope, magnetometer)
+  - Linear acceleration
+  - Orientation (quaternions, Euler angles)
+  - Heading
+  - Environmental data (temperature, pressure, altitude)
+  - Timestamp
 - **2. Convert to Byte Array:**
-      Using `memcpy`, the float data is copied into a **byte buffer**:
-      ```memcpy(buffer, data, sizeof(data));```
-      - Each `float` occupies 4 bytes.
-      - The resulting buffer contains all sensor readings in **raw binary format**.
+    Using `memcpy`, the float data is copied into a **byte buffer**:
+```memcpy(buffer, data, sizeof(data));```
+  - Each `float` occupies 4 bytes.
+  - The resulting buffer contains all sensor readings in **raw binary format**.
 - **3. HEX Representation (Optional for Debugging):**
-      The bytes in the buffer can be printed as hexadecimal values for human-readable inspection:
-      ```cpp
+    The bytes in the buffer can be printed as hexadecimal values for human-readable inspection:
+```cpp
       for (int i = 0; i < sizeof(buffer); i++) {
           if (buffer[i] < 0x10) Serial.print("0");
           Serial.print(buffer[i], HEX);
           Serial.print(" ");
       }
       Serial.println();
-      ```
-      - This produces a line of HEX values like:
-      ```3F 80 00 00 40 00 00 00 ...```
-      - Each HEX pair represents one byte of sensor data.
+```
+  - This produces a line of HEX values like:
+```3F 80 00 00 40 00 00 00 ...```
+  - Each HEX pair represents one byte of sensor data.
 
 - **4. BLE Transmission:**
-      - The same byte buffer is sent directly over BLE:
-      ```
+  - The same byte buffer is sent directly over BLE:
+```
       void sendDataBLE(uint8_t* buffer, size_t& length) {
         float data[] = { /* all sensor variables */ };
         length = sizeof(data);
         memcpy(buffer, data, length);
       }
-      ```
-      - The BLE device receives the binary payload, which can then be decoded back into float values on the receiver side.
+```
+  - The BLE device receives the binary payload, which can then be decoded back into float values on the receiver side.
 
 ### Why HEX / Binary Encoding?
 - **Compactness:** Binary data is smaller than sending text or decimal strings.
@@ -151,6 +149,8 @@ The **IMU_GY91-ESP32_BLE** system encodes sensor data into a **hexadecimal forma
 - **Data Serialization:** Structuring sensor data for wireless transmission.
 - **Debugging & Visualization:** Converting binary data to HEX for inspection.
 - **Wireless Communication:** BLE transmission of binary payloads for real-time applications.
+
+---
   
 ### What is this system capturing?
 The IMU_GY91-ESP32_BLE system captures real-time sensor data from the GY-91 module, providing comprehensive information about motion, orientation, and the surrounding environment. The captured data includes:
