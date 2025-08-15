@@ -140,11 +140,11 @@ The IMU_GY91-ESP32_BLE system is designed to **capture, process, and transmit re
 
 ### What is this system capturing?
 The IMU_GY91-ESP32_BLE system captures real-time sensor data from the GY-91 module, providing comprehensive information about motion, orientation, and the surrounding environment. The captured data includes:
-#### Accelerometer Data (ax, ay, az)
+#### Accelerometer Data (`ax, ay, az`)
 Measures the acceleration forces acting on the device along three orthogonal axes (X, Y, Z).
   - Useful for detecting motion, orientation changes, vibrations, and impact forces.
   - Can also be used to compute linear acceleration by removing the effect of gravity (la_x, la_y, la_z).
-#### Gyroscope Data (gx, gy, gz)
+#### Gyroscope Data (`gx, gy, gz`)
 Measures angular velocity around the X, Y, and Z axes.
 - Allows detection of rotational motion and angular changes.
 - Integral to calculating device orientation when combined with accelerometer and magnetometer data.
