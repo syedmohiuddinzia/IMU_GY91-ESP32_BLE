@@ -14,66 +14,122 @@ The **ESP32** is a versatile microcontroller used as the brain of this system. I
 
 ### 2. GY-91 Sensor Module
 The **GY-91** is a compact sensor module that combines two important sensors for motion and environmental data:
-**a) MPU-9250 (9-axis IMU)**
-- **Accelerometer (3-axis):** Measures linear acceleration in X, Y, Z axes, useful for detecting movement and orientation changes.
-- **Gyroscope (3-axis):** Measures angular velocity along X, Y, Z axes, allowing detection of rotation or angular changes.
-- **Magnetometer (3-axis):** Measures magnetic fields along X, Y, Z axes, which is essential for calculating compass heading.
+- **a) MPU-9250 (9-axis IMU)**
+  - **Accelerometer (3-axis):** Measures linear acceleration in X, Y, Z axes, useful for detecting movement and orientation changes.
+  - **Gyroscope (3-axis):** Measures angular velocity along X, Y, Z axes, allowing detection of rotation or angular changes.
+  - **Magnetometer (3-axis):** Measures magnetic fields along X, Y, Z axes, which is essential for calculating compass heading.
 Together, these sensors form a 9-axis IMU (Inertial Measurement Unit), which provides comprehensive motion and orientation information.
+- **b) BMP280 (Barometer)**
+  - Measures **atmospheric pressure** and **temperature**.
+  - Computes **altitude** based on pressure readings using the barometric formula.
+  - Enables environmental monitoring and enhances navigation systems by providing vertical positioning data.
 
-**b) BMP280 (Barometer)**
-- Measures **atmospheric pressure** and **temperature**.
-- Computes **altitude** based on pressure readings using the barometric formula.
-- Enables environmental monitoring and enhances navigation systems by providing vertical positioning data.
-
-3. Connections
+### 3. Connections
 To interface the GY-91 with the ESP32:
-I²C Interface:
-SCL (Serial Clock Line)
-SDA (Serial Data Line)
-Required for both MPU-9250 and BMP280 communication with the ESP32.
+- **I²C Interface:**
+  -  SCL (Serial Clock Line)
+  -  SDA (Serial Data Line)
+  -  Required for both MPU-9250 and BMP280 communication with the ESP32.
+- **Power Pins:**
+  - VCC: Provides 3.3V or 5V power to the GY-91 module.
+  - GND: Common ground between ESP32 and the sensor module.
+- **Optional Pins:** Some modules may have additional interrupt pins for advanced features like motion detection or calibration.
 
-Power Pins:
-VCC: Provides 3.3V or 5V power to the GY-91 module.
-GND: Common ground between ESP32 and the sensor module.
-Optional Pins: Some modules may have additional interrupt pins for advanced features like motion detection or calibration.
-
-Software Requirements
+## Software Requirements
 To program the ESP32 and manage sensor data, the following software components are needed:
+- **1. Arduino IDE**
+  - A widely used development environment for microcontrollers.
+  - Provides a simple interface for writing, compiling, and uploading code to the ESP32.
+  - Supports libraries and extensions for BLE, sensor communication, and real-time processing.
 
-1. Arduino IDE
-A widely used development environment for microcontrollers.
-Provides a simple interface for writing, compiling, and uploading code to the ESP32.
-Supports libraries and extensions for BLE, sensor communication, and real-time processing.
+- **2. ESP32 Board Support Package**
+  - Required to add ESP32 support to Arduino IDE.
+  - Includes board definitions, libraries, and tools to compile code specifically for ESP32 microcontrollers.
+  - Enables access to ESP32-specific features such as BLE, Wi-Fi, and dual-core task management.
 
-2. ESP32 Board Support Package
-Required to add ESP32 support to Arduino IDE.
-Includes board definitions, libraries, and tools to compile code specifically for ESP32 microcontrollers.
-Enables access to ESP32-specific features such as BLE, Wi-Fi, and dual-core task management.
+- **3. Libraries**
+  - **MPU9250 Library:**
+    - Provides functions to read accelerometer, gyroscope, and magnetometer data.
+    - Computes quaternions and Euler angles for orientation estimation.
+  - **Adafruit_BMP280 Library:**
+    - Allows easy communication with BMP280 sensor over I²C.
+    - Reads pressure, temperature, and calculates altitude.
+  - **BLE Libraries:**
+    - Enable wireless transmission of sensor data to BLE-enabled devices.
+    - Supports creating BLE services and characteristics for structured data communication.
 
-3. Libraries
-MPU9250 Library:
-Provides functions to read accelerometer, gyroscope, and magnetometer data.
-Computes quaternions and Euler angles for orientation estimation.
+### System Variables
+The System Variables section provides a detailed overview of all the global variables used in this project to represent real-time sensor data, processed values, and orientation information. These variables are essential for capturing motion, orientation, heading, and environmental parameters from the GY-91 sensor module.
 
-Adafruit_BMP280 Library:
-Allows easy communication with BMP280 sensor over I²C.
-Reads pressure, temperature, and calculates altitude.
+The variables are categorized into two main groups:
+**MPU9250 Variables**
+| Variable | Type | Description | Units / Notes |
+|----------|------|-------------|---------------|
+| `ax` | float | Accelerometer reading along X-axis | m/s², measures linear acceleration including gravity |
+| `ay` | float | Accelerometer reading along Y-axis | m/s² |
+| `az` | float | Accelerometer reading along Z-axis | m/s² |
+| `gx` | float | Gyroscope reading along X-axis | °/s, measures angular velocity |
+| `gy` | float | Gyroscope reading along Y-axis | °/s |
+| `gz` | float | Gyroscope reading along Z-axis | °/s |
+| `mx` | float | Magnetometer reading along X-axis | µT (microtesla), used for heading computation |
+| `my` | float | Magnetometer reading along Y-axis | µT |
+| `mz` | float | Magnetometer reading along Z-axis | µT |
+| `la_x` | float | Linear acceleration along X-axis (gravity removed) | m/s², useful for motion detection |
+| `la_y` | float | Linear acceleration along Y-axis | m/s² |
+| `la_z` | float | Linear acceleration along Z-axis | m/s² |
+| `h` | float | Heading computed from sensor fusion | Degrees, calculated using magnetometer + gyro |
+| `qx` | float | Orientation quaternion X component | Unitless, used for 3D orientation |
+| `qy` | float | Orientation quaternion Y component | Unitless |
+| `qz` | float | Orientation quaternion Z component | Unitless |
+| `qw` | float | Orientation quaternion W component | Unitless |
+| `ex` | float | Euler angle error / correction along X | Degrees, used in sensor fusion |
+| `ey` | float | Euler angle error / correction along Y | Degrees |
+| `ez` | float | Euler angle error / correction along Z | Degrees |
+| `yaw` | float | Yaw angle | Degrees, rotation around Z-axis |
+| `pitch` | float | Pitch angle | Degrees, rotation around Y-axis |
+| `roll` | float | Roll angle | Degrees, rotation around X-axis |
+| `t` | float | Timestamp of sensor reading | ms, used for timing & synchronization |
+| `hD` | int | Heading in degrees | Degrees, user-friendly compass heading |
 
-BLE Libraries:
-Enable wireless transmission of sensor data to BLE-enabled devices.
-Supports creating BLE services and characteristics for structured data communication.
+**BMP280 Variables**
+| Variable | Type | Description | Units / Notes |
+|----------|------|-------------|---------------|
+| `bmp` | Object | BMP280 sensor object | Used to access temperature, pressure, and altitude |
+| `ta` | float | Temperature from BMP280 | °C |
+| `p` | float | Atmospheric pressure | Pa or hPa |
+| `a` | float | Altitude calculated from pressure | Meters above sea level, using barometric formula |
 
-## System Varaiables
-
-### MPu9250 Variables 
-### BMP280 Variables
 
 ## System Functionality
-- Captures real-time IMU and barometer data.
-- Computes orientation in Euler angles and quaternions.
-- Calculates heading in degrees.
-- Estimates altitude from pressure.
-- Sends data over BLE for visualization, logging, or further processing.
+The IMU_GY91-ESP32_BLE system is designed to capture, process, and transmit real-time motion and environmental data. Its functionality can be broken down into several key operations:
+
+### 1. Real-Time IMU and Barometer Data Acquisition
+- The system continuously reads data from the MPU-9250 sensor, including:
+  - Accelerometer (X, Y, Z axes) – measures linear acceleration including gravity.
+  - Gyroscope (X, Y, Z axes) – measures angular velocity.
+  - Magnetometer (X, Y, Z axes) – measures magnetic field strength for heading calculations.
+- Simultaneously, the BMP280 sensor provides:
+- Temperature (°C)
+- Atmospheric pressure (Pa or hPa)
+- Altitude (meters above sea level, calculated from pressure)
+### 2. Orientation Computation (Quaternions & Euler Angles)
+- Raw IMU data is processed using sensor fusion algorithms to compute the device’s orientation.
+- Quaternions (qx, qy, qz, qw) provide a robust representation of 3D rotation without gimbal lock.
+- Euler angles (yaw, pitch, roll) are derived from quaternions, giving intuitive rotational angles around X, Y, and Z axes.
+### 3. Heading Calculation
+- The system calculates the heading (h and hD) in degrees using fused data from the magnetometer and gyroscope.
+- Heading provides the orientation relative to the Earth’s magnetic field, essential for navigation and motion tracking applications.
+### 4. Altitude Estimation
+- The BMP280 barometer measures atmospheric pressure, which is converted to altitude (a) using the barometric formula.
+- This allows the system to monitor vertical positioning in applications like drones or wearable devices.
+### 5. Wireless Data Transmission via BLE
+- Processed sensor data is encoded into BLE packets and transmitted to BLE-enabled devices (smartphones, tablets, or computers).
+- This enables real-time visualization, logging, or further processing of motion and environmental data in external applications.
+### 6. Applications
+- Motion tracking & orientation monitoring for drones, robots, or wearables.
+- Navigation and heading detection in GPS-independent systems.
+- Environmental monitoring, including temperature, pressure, and altitude changes.
+- Data logging and analysis for research, engineering, or IoT projects.
 
 ---
 
