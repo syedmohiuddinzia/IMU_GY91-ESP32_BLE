@@ -143,66 +143,87 @@ The IMU_GY91-ESP32_BLE system captures real-time sensor data from the GY-91 modu
 #### Accelerometer Data (`ax, ay, az`)
 Measures the acceleration forces acting on the device along three orthogonal axes (X, Y, Z).
   - Useful for detecting motion, orientation changes, vibrations, and impact forces.
-  - Can also be used to compute linear acceleration by removing the effect of gravity (la_x, la_y, la_z).
+  - Can also be used to compute linear acceleration by removing the effect of gravity (`la_x, la_y, la_z`).
 #### Gyroscope Data (`gx, gy, gz`)
 Measures angular velocity around the X, Y, and Z axes.
 - Allows detection of rotational motion and angular changes.
 - Integral to calculating device orientation when combined with accelerometer and magnetometer data.
-#### Magnetometer Data (mx, my, mz)
+#### Magnetometer Data (`mx, my, mz`)
 Measures the strength and direction of the magnetic field along three axes.
 - Essential for determining compass heading and correcting drift in orientation calculations.
 - Helps the system determine its heading relative to Earth’s magnetic field.
-#### Barometer Data (ta, p, a)
+#### Barometer Data (`ta, p, a`)
 Measures atmospheric pressure and temperature.
-- Altitude (a) is estimated using the barometric formula.
+- Altitude (`a`) is estimated using the barometric formula.
 - Useful for environmental monitoring, weather analysis, and elevation tracking.
 
 ### Why is this data important?
-This data is crucial for various applications:
-- **Motion Tracking: Monitoring movement and orientation in devices like drones, wearables, and robotics.
-- **Environmental Monitoring: Assessing atmospheric pressure and temperature for weather-related studies.
-- **Navigation Systems: Providing orientation and positioning data for GPS-independent navigation.
-What technical skills are applied?
+Capturing this combination of motion and environmental data is critical for a wide range of applications:
+#### Motion Tracking
+- Monitors movement and orientation in devices such as **drones, robots, wearable devices, and AR/VR systems**.
+- Enables precise control, stabilization, and navigation based on real-time movement data.
+#### Environmental Monitoring
+- Measures atmospheric pressure and temperature for **weather-related studies, environmental sensing, or altitude estimation**.
+- Can support research in meteorology or IoT-based smart systems.
+#### Navigation Systems
+- Provides **orientation, heading, and positional data** independent of GPS.
+- Critical for applications like drone autopilot, robotics navigation, and portable devices operating in GPS-denied environments.
 
-### The project involves:
-Embedded Systems Programming: Writing code for the ESP32 to interface with the GY-91 sensor and manage BLE communication.
-Sensor Integration: Configuring and reading data from the GY-91 sensor module using the I²C protocol.
-Wireless Communication: Implementing BLE protocols to transmit sensor data to external devices.
-Data Processing: Handling and formatting sensor data for transmission and analysis.
+### Technical Skills Applied
+This project combines several technical skills, demonstrating a practical application of embedded systems and sensor integration:
+#### Embedded Systems Programming
+- Writing efficient code for the **ESP32 microcontroller** to interface with sensors, process data, and manage BLE communication.
+#### Sensor Integration
+- Configuring and reading data from the **GY-91 sensor module** over the **I²C protocol**.
+- Understanding accelerometer, gyroscope, magnetometer, and barometer data and how to fuse them for accurate orientation and motion tracking.
+#### Wireless Communication
+- Implementing **BLE (Bluetooth Low Energy)** to transmit sensor data to external devices for visualization, logging, or further processing.
+#### Data Processing & Sensor Fusion
+- Handling, filtering, and formatting real-time sensor data.
+- Computing quaternions, Euler angles, heading, linear acceleration, and altitude to provide actionable insights.
+This combination of hardware interfacing, data processing, and wireless communication makes the system capable of **real-time motion analysis, orientation tracking, and environmental monitoring**.
 
-Getting Started
+---
 
-Hardware Requirements:
+## Getting Started
+Follow these steps to quickly set up and run the **IMU_GY91-ESP32_BLE** system:
 
-ESP32 development board.
+### Hardware Setup
+- 1- Connect the **GY-91 module** to the **ESP32** using the I²C interface:**
+  - **SDA → GPIO 21, SCL → GPIO 22**
+  - **VCC → 3.3V/5V, GND → GND**
+- 2- Ensure all connections are secure.**
 
-GY-91 sensor module.
+### Software Setup
+- 1. Install the **Arduino IDE** and add **ESP32 board support** via the Boards Manager.**
+- 2. Install the required libraries:**
+  - MPU9250 (for IMU data)
+  - Adafruit_BMP280 (for barometric data)
+  - BLE libraries (for wireless communication)
 
-Jumper wires for connections.
+### Uploading the Code
+- 1- Open the provided Arduino sketch in Arduino IDE.
+- 2- Select your ESP32 board and port under **Tools → Board & Port**.
+- 3- Click **Upload** to flash the code to the ESP32.
 
-Software Setup:
-
-Install the Arduino IDE.
-
-Add ESP32 board support via the Arduino Board Manager.
-
-Install necessary libraries for I²C communication and BLE.
-
-Connections:
-
-Connect the GY-91 module to the ESP32 using the I²C interface (SCL, SDA, GND, VCC).
-
-Upload Code:
-
-Load the provided Arduino sketch to the ESP32.
-
-Monitor Data:
-
-Use a BLE-compatible app on your smartphone or computer to connect to the ESP32 and view the transmitted sensor data.
-
-Future Enhancements
-
-Data Logging: Implement functionality to log sensor data to an SD card or cloud service.
+### Monitoring Data
+- Use a BLE-compatible app (e.g., **nRF Connect, LightBlue**) on your smartphone or computer.
+- Connect to the ESP32 and visualize real-time sensor data including:
+  - Acceleration, angular velocity, and magnetic field
+  - Orientation (Euler angles & quaternions)
+  - Heading, temperature, pressure, and altitude
+ 
+  ---
+  
+## Future Enhancements
+- **1. Data Logging**
+  - Log sensor data to an SD card or cloud service for long-term analysis.
+- **2. Advanced Processing**
+  - Implement sensor fusion algorithms like Madgwick or Kalman filters to improve orientation accuracy.
+- User Interface
+  - Develop mobile or web applications for real-time visualization, graphs, and alerts.
+- Extended Hardware Integration
+  - Add additional sensors such as GPS or environmental sensors to expand system capabilities.
 
 Advanced Processing: Apply algorithms for sensor fusion to improve data accuracy.
 
