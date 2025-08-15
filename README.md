@@ -3,6 +3,8 @@ The IMU_GY91-ESP32_BLE project demonstrates how to capture, process, and transmi
 The system reads data from the MPU-9250 (accelerometer, gyroscope, magnetometer) and BMP280 (barometer) sensors, calculates orientation and heading, and broadcasts this data wirelessly via Bluetooth Low Energy (BLE).</b>
 This setup can be used for motion tracking, orientation estimation, environmental sensing, robotics, and IoT applications.</b>
 
+---
+
 ## Hardware Components
 ### 1. ESP32 Development Board
 The **ESP32** is a versatile microcontroller used as the brain of this system. Its key features include:
@@ -34,6 +36,8 @@ To interface the GY-91 with the ESP32:
   - VCC: Provides 3.3V or 5V power to the GY-91 module.
   - GND: Common ground between ESP32 and the sensor module.
 - **Optional Pins:** Some modules may have additional interrupt pins for advanced features like motion detection or calibration.
+
+---
 
 ## Software Requirements
 To program the ESP32 and manage sensor data, the following software components are needed:
@@ -99,28 +103,29 @@ The variables are categorized into two main groups:
 | `p` | float | Atmospheric pressure | Pa or hPa |
 | `a` | float | Altitude calculated from pressure | Meters above sea level, using barometric formula |
 
+---
 
 ## System Functionality
-The IMU_GY91-ESP32_BLE system is designed to capture, process, and transmit real-time motion and environmental data. Its functionality can be broken down into several key operations:
+The IMU_GY91-ESP32_BLE system is designed to **capture, process, and transmit real-time motion and environmental data**. Its functionality can be broken down into several key operations:
 
 ### 1. Real-Time IMU and Barometer Data Acquisition
 - The system continuously reads data from the MPU-9250 sensor, including:
-  - Accelerometer (X, Y, Z axes) – measures linear acceleration including gravity.
-  - Gyroscope (X, Y, Z axes) – measures angular velocity.
-  - Magnetometer (X, Y, Z axes) – measures magnetic field strength for heading calculations.
+  - **Accelerometer** (X, Y, Z axes) – measures linear acceleration including gravity.
+  - **Gyroscope** (X, Y, Z axes) – measures angular velocity.
+  - **Magnetometer** (X, Y, Z axes) – measures magnetic field strength for heading calculations.
 - Simultaneously, the BMP280 sensor provides:
-- Temperature (°C)
-- Atmospheric pressure (Pa or hPa)
-- Altitude (meters above sea level, calculated from pressure)
+- **Temperature** (°C)
+- **Atmospheric** pressure (Pa or hPa)
+- **Altitude** (meters above sea level, calculated from pressure)
 ### 2. Orientation Computation (Quaternions & Euler Angles)
-- Raw IMU data is processed using sensor fusion algorithms to compute the device’s orientation.
-- Quaternions (qx, qy, qz, qw) provide a robust representation of 3D rotation without gimbal lock.
-- Euler angles (yaw, pitch, roll) are derived from quaternions, giving intuitive rotational angles around X, Y, and Z axes.
+- Raw IMU data is processed using **sensor fusion algorithms** to compute the device’s orientation.
+- **Quaternions** (`qx, qy, qz, qw`) provide a robust representation of 3D rotation without gimbal lock.
+- **Euler angles** (`yaw, pitch, roll`) are derived from quaternions, giving intuitive rotational angles around X, Y, and Z axes.
 ### 3. Heading Calculation
-- The system calculates the heading (h and hD) in degrees using fused data from the magnetometer and gyroscope.
+- The system calculates the **heading** (`hD`) in degrees using fused data from the magnetometer and gyroscope.
 - Heading provides the orientation relative to the Earth’s magnetic field, essential for navigation and motion tracking applications.
 ### 4. Altitude Estimation
-- The BMP280 barometer measures atmospheric pressure, which is converted to altitude (a) using the barometric formula.
+- The BMP280 barometer measures atmospheric pressure, which is converted to altitude (`a`) using the barometric formula.
 - This allows the system to monitor vertical positioning in applications like drones or wearable devices.
 ### 5. Wireless Data Transmission via BLE
 - Processed sensor data is encoded into BLE packets and transmitted to BLE-enabled devices (smartphones, tablets, or computers).
@@ -134,11 +139,23 @@ The IMU_GY91-ESP32_BLE system is designed to capture, process, and transmit real
 ---
 
 ### What is this system capturing?
-The system captures real-time sensor data from the GY-91 module, including:
-- **Accelerometer Data:** Measures acceleration forces in three axes.
-- **Gyroscope Data:** Measures angular velocity in three axes.
-- **Magnetometer Data:** Measures magnetic field strength in three axes.
-- **Barometer Data:** Measures atmospheric pressure and temperature.
+The IMU_GY91-ESP32_BLE system captures real-time sensor data from the GY-91 module, providing comprehensive information about motion, orientation, and the surrounding environment. The captured data includes:
+#### Accelerometer Data (ax, ay, az)
+Measures the acceleration forces acting on the device along three orthogonal axes (X, Y, Z).
+  - Useful for detecting motion, orientation changes, vibrations, and impact forces.
+  - Can also be used to compute linear acceleration by removing the effect of gravity (la_x, la_y, la_z).
+#### Gyroscope Data (gx, gy, gz)
+Measures angular velocity around the X, Y, and Z axes.
+- Allows detection of rotational motion and angular changes.
+- Integral to calculating device orientation when combined with accelerometer and magnetometer data.
+#### Magnetometer Data (mx, my, mz)
+Measures the strength and direction of the magnetic field along three axes.
+- Essential for determining compass heading and correcting drift in orientation calculations.
+- Helps the system determine its heading relative to Earth’s magnetic field.
+#### Barometer Data (ta, p, a)
+Measures atmospheric pressure and temperature.
+- Altitude (a) is estimated using the barometric formula.
+- Useful for environmental monitoring, weather analysis, and elevation tracking.
 
 ### Why is this data important?
 This data is crucial for various applications:
