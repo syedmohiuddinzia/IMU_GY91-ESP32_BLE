@@ -12,7 +12,7 @@ It is suitable for applications in **motion tracking, orientation estimation, ro
 - **Integrated Wi-Fi & BLE:** Wireless connectivity for real-time data visualization.
 - **I²C Compatible (3.3V):** Required for sensor communication.
 - **Low Power Modes & GPIOs:** Expandable for portable and sensor-rich applications.
-  ![0.jpeg](https://github.com/syedmohiuddinzia/IMU_GY91-ESP32_BLE/blob/main/media/0.jpeg)
+![0.jpeg](https://github.com/syedmohiuddinzia/IMU_GY91-ESP32_BLE/blob/main/media/0.jpeg)
 
 ### 2. GY-91 Sensor Module
 - **MPU-9250 (9-axis IMU):** Provides accelerometer, gyroscope, and magnetometer readings for motion and orientation tracking.
@@ -143,6 +143,8 @@ The **IMU_GY91-ESP32_BLE** system encodes sensor data into a **hexadecimal forma
 - **Precision:** Ensures float values are transmitted without rounding errors.
 - **Consistency:** All variables are serialized in a fixed order, making decoding straightforward.
 - **Debug-Friendly:** Printing the buffer in HEX allows easy verification of transmitted data.
+
+![1.jpeg](https://github.com/syedmohiuddinzia/IMU_GY91-ESP32_BLE/blob/main/media/1.jpeg)
 
 ### Technical Skills Applied:
 - **Memory Management:** Using memcpy to serialize float data into bytes.
